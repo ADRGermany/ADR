@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ADR – Aerial Drone Rescue</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #0a0a0a; --off-black: #111111; --red: #8B0000; --red-dim: #6b0000;
+      --white: #f5f5f5; --gray: #888888; --border: #222222;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--black); color: var(--white); font-family: 'Inter', sans-serif; font-weight: 300; line-height: 1.7; font-size: 16px; -webkit-font-smoothing: antialiased; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 3rem; background: rgba(10,10,10,0.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.25em; color: var(--white); text-decoration: none; }
+    .nav-logo span { color: var(--red); }
+    nav a.nav-link { font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gray); text-decoration: none; transition: color 0.2s; }
+    nav a.nav-link:hover { color: var(--white); }
+
+    #hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 8rem 3rem 6rem; position: relative; overflow: hidden; }
+    #hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(ellipse at 20% 50%, rgba(139,0,0,0.06) 0%, transparent 60%); pointer-events: none; }
+    .hero-eyebrow { font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--red); margin-bottom: 2rem; font-weight: 500; opacity: 0; animation: fadeUp 0.6s ease forwards 0.2s; }
+    .hero-line { font-family: 'Space Grotesk', sans-serif; font-size: clamp(2rem, 5vw, 4rem); font-weight: 400; line-height: 1.15; color: var(--gray); opacity: 0; animation: fadeUp 0.6s ease forwards; }
+    .hero-line:nth-child(2) { animation-delay: 0.4s; }
+    .hero-line:nth-child(3) { color: var(--white); font-weight: 700; animation-delay: 0.7s; }
+    .hero-name { font-family: 'Space Grotesk', sans-serif; font-size: clamp(3.5rem, 10vw, 8rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1; margin-top: 3rem; opacity: 0; animation: fadeUp 0.8s ease forwards 1.1s; }
+    .hero-name .adr { color: var(--white); }
+    .hero-name .sub { display: block; font-size: clamp(0.9rem, 2vw, 1.3rem); font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); margin-top: 1rem; }
+    .hero-scroll { margin-top: 5rem; opacity: 0; animation: fadeUp 0.6s ease forwards 1.6s; }
+    .hero-scroll a { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); text-decoration: none; display: flex; align-items: center; gap: 1rem; transition: color 0.2s; }
+    .hero-scroll a:hover { color: var(--white); }
+    .hero-scroll a::after { content: ''; display: block; width: 40px; height: 1px; background: currentColor; }
+
+    section { padding: 7rem 3rem; max-width: 900px; margin: 0 auto; }
+    .section-label { font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--red); font-weight: 500; margin-bottom: 2.5rem; display: flex; align-items: center; gap: 1rem; }
+    .section-label::after { content: ''; display: block; width: 30px; height: 1px; background: var(--red); }
+    h2 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 600; line-height: 1.2; margin-bottom: 2rem; letter-spacing: -0.01em; }
+    p { color: #aaaaaa; font-size: 1.05rem; margin-bottom: 1.2rem; max-width: 65ch; }
+    p strong { color: var(--white); font-weight: 500; }
+
+    .divider { width: 100%; height: 1px; background: var(--border); max-width: 900px; margin: 0 auto; }
+
+    .pillars { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2px; margin-top: 3rem; }
+    .pillar { background: var(--off-black); padding: 2.5rem 2rem; border: 1px solid var(--border); }
+    .pillar-number { font-family: 'Space Grotesk', sans-serif; font-size: 0.7rem; letter-spacing: 0.2em; color: var(--red); font-weight: 600; margin-bottom: 1.2rem; }
+    .pillar-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; font-weight: 600; color: var(--white); margin-bottom: 0.8rem; }
+    .pillar p { font-size: 0.9rem; color: var(--gray); margin: 0; }
+
+    .quote-block { border-left: 2px solid var(--red); padding: 2rem 2.5rem; margin: 3rem 0; background: var(--off-black); }
+    .quote-block p { font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.1rem, 2.5vw, 1.5rem); color: var(--white); font-weight: 400; line-height: 1.5; margin: 0; max-width: none; }
+    .quote-block p em { color: var(--red); font-style: normal; }
+
+    .download-block { display: flex; align-items: center; justify-content: space-between; padding: 2rem 2.5rem; border: 1px solid var(--border); background: var(--off-black); margin-top: 2.5rem; gap: 2rem; flex-wrap: wrap; }
+    .download-info { flex: 1; }
+    .download-title { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 600; color: var(--white); margin-bottom: 0.3rem; }
+    .download-meta { font-size: 0.8rem; color: var(--gray); }
+    .btn { display: inline-flex; align-items: center; gap: 0.6rem; padding: 0.8rem 1.8rem; background: var(--red); color: var(--white); font-family: 'Space Grotesk', sans-serif; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: background 0.2s; white-space: nowrap; }
+    .btn:hover { background: var(--red-dim); }
+
+    .kontakt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; margin-top: 3rem; }
+    .kontakt-item-label { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); margin-bottom: 0.5rem; }
+    .kontakt-item-value { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; color: var(--white); font-weight: 500; }
+    .kontakt-item-value a { color: var(--white); text-decoration: none; border-bottom: 1px solid var(--border); padding-bottom: 2px; transition: border-color 0.2s; }
+    .kontakt-item-value a:hover { border-color: var(--red); }
+
+    footer { padding: 2rem 3rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    footer p { font-size: 0.75rem; color: var(--gray); margin: 0; max-width: none; }
+    footer .footer-logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.2em; color: var(--gray); }
+    footer .footer-logo span { color: var(--red); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    @media (prefers-reduced-motion: reduce) { *, .fade-in { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; } }
+    @media (max-width: 768px) { nav { padding: 1.2rem 1.5rem; } nav a.nav-link { display: none; } #hero, section { padding-left: 1.5rem; padding-right: 1.5rem; } .kontakt-grid { grid-template-columns: 1fr; gap: 2rem; } footer { padding: 1.5rem; flex-direction: column; align-items: flex-start; } }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#hero" class="nav-logo">A<span>D</span>R</a>
+    <a href="#kontakt" class="nav-link">Kontakt</a>
+  </nav>
+
+  <section id="hero">
+    <div class="hero-eyebrow">Aerial Drone Rescue</div>
+    <div class="hero-line">Es gibt Orte wo kein Rettungsdienst mehr fährt.</div>
+    <div class="hero-line">Wir fahren.</div>
+    <div class="hero-name">
+      <span class="adr">ADR</span>
+      <span class="sub">Aerial Drone Rescue</span>
+    </div>
+    <div class="hero-scroll">
+      <a href="#mission">Mehr erfahren</a>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="mission">
+    <div class="section-label fade-in">Mission</div>
+    <h2 class="fade-in">Wir kommen wenn<br>kein anderer mehr kommt.</h2>
+    <p class="fade-in">ADR ist keine weitere Hilfsorganisation. ADR füllt eine Lücke die bisher niemand füllt – die Rettung von Menschen in Gebieten die für jeden anderen unerreichbar sind.</p>
+    <p class="fade-in">Schlucht. Schacht. Gebirge. Dunkel. Überall dort wo Rettungsdienst und Hubschrauber aufhören.</p>
+    <div class="quote-block fade-in">
+      <p>Wir holen Menschen raus und halten sie am Leben.<br><em>Den Rest macht der Rettungsdienst.</em></p>
+    </div>
+    <p class="fade-in">ADR arbeitet mit Schwerlastdrohnen, spezialisierten Höhenrettern und einem mobilen Führungssystem das jeden Einsatz koordiniert. Schneller verfügbar als ein Hubschrauber. Einsetzbar wo kein Hubschrauber landen kann.</p>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="team">
+    <div class="section-label fade-in">Das Team</div>
+    <h2 class="fade-in">Ausgebildet für das<br>was andere nicht können.</h2>
+    <p class="fade-in">Unsere Einsatzkräfte sind Notfallsanitäter, Höhenretter, Wasserretter, Höhlenretter und Fallschirmspringer. Ausgebildet nach einem Standard der härter ist als alles was sie je im Einsatz sehen werden.</p>
+    <div class="pillars fade-in">
+      <div class="pillar">
+        <div class="pillar-number">I</div>
+        <div class="pillar-title">Wissen</div>
+        <p>Nicht Lehrbuch. Erfahrungswissen das sich in den Händen sitzt – weil man es schon gesehen hat.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-number">II</div>
+        <div class="pillar-title">Können</div>
+        <p>Sorgfalt ist Respekt. Gegenüber dem Material. Gegenüber dem Team. Gegenüber der Person die auf uns wartet.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-number">III</div>
+        <div class="pillar-title">Bruderschaft</div>
+        <p>Eingeschworene Einsatzkräfte die sich blind vertrauen. Niemand wird zurückgelassen. Nie. Nirgends.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="konzept">
+    <div class="section-label fade-in">Konzept</div>
+    <h2 class="fade-in">Das vollständige<br>Konzeptpapier.</h2>
+    <p class="fade-in">ADR befindet sich im Aufbau. Das vollständige Konzeptpapier beschreibt Mission, Fahrzeugkonzept, Drohnentechnik, Personalphilosophie, Ausbildungsstandard und rechtlichen Rahmen.</p>
+    <div class="download-block fade-in">
+      <div class="download-info">
+        <div class="download-title">ADR Konzeptpapier v1.0</div>
+        <div class="download-meta">Vollständiges Konzept · Deutsch</div>
+      </div>
+      <a href="ADR_Konzeptpapier_v1.docx" class="btn" download>Download</a>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="kontakt">
+    <div class="section-label fade-in">Kontakt</div>
+    <h2 class="fade-in">Gespräch aufnehmen.</h2>
+    <p class="fade-in">Du bist Einsatzkraft, Ausbilder, Entwickler, Förderer – oder willst einfach mehr wissen? Meld dich.</p>
+    <div class="kontakt-grid fade-in">
+      <div>
+        <div class="kontakt-item-label">E-Mail</div>
+        <div class="kontakt-item-value"><a href="mailto:info@aerial-drone-rescue.de">info@aerial-drone-rescue.de</a></div>
+      </div>
+      <div>
+        <div class="kontakt-item-label">Organisation</div>
+        <div class="kontakt-item-value">Aerial Drone Rescue</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-logo">A<span>D</span>R</div>
+    <p>Aerial Drone Rescue · Konzeptphase · Deutschland</p>
+    <p>Gebrochen von der härtesten Nacht. Zusammengeschweißt für immer.</p>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
