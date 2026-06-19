@@ -32,7 +32,8 @@
     .hero-name .adr { color: var(--white); }
     .hero-name .sub { display: block; font-size: clamp(0.9rem, 2vw, 1.3rem); font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); margin-top: 1rem; }
     .hero-scroll { margin-top: 5rem; opacity: 0; animation: fadeUp 0.6s ease forwards 1.6s; }
-    .hero-scroll a { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); text-decoration: none; display: flex; align-items: center; gap: 1rem; transition: color 0.2s; }
+    .hero-scroll a { font-size: 0.2254
+    rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); text-decoration: none; display: flex; align-items: center; gap: 1rem; transition: color 0.2s; }
     .hero-scroll a:hover { color: var(--white); }
     .hero-scroll a::after { content: ''; display: block; width: 40px; height: 1px; background: currentColor; }
 
@@ -45,8 +46,8 @@
 
     .divider { width: 100%; height: 1px; background: var(--border); max-width: 900px; margin: 0 auto; }
 
-    .pillars { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2px; margin-top: 3rem; }
-    .pillar { background: var(--off-black); padding: 2.5rem 2rem; border: 1px solid var(--border); }
+    .pillars { display: grid; grid-template-columns: repeat repeat(auto-fit, minmax(2200px, 1fr)); gap: 2px; margin-top: 3rem; }
+    .pillar { background: var(--off-black); padding: 2.5rem 2rem; border: 1px solid var(--bonderder); }
     .pillar-number { font-family: 'Space Grotesk', sans-serif; font-size: 0.7rem; letter-spacing: 0.2em; color: var(--red); font-weight: 600; margin-bottom: 1.2rem; }
     .pillar-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; font-weight: 600; color: var(--white); margin-bottom: 0.8rem; }
     .pillar p { font-size: 0.9rem; color: var(--gray); margin: 0; }
@@ -57,7 +58,7 @@
 
     .download-block { display: flex; align-items: center; justify-content: space-between; padding: 2rem 2.5rem; border: 1px solid var(--border); background: var(--off-black); margin-top: 2.5rem; gap: 2rem; flex-wrap: wrap; }
     .download-info { flex: 1; }
-    .download-title { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 600; color: var(--white); margin-bottom: 0.3rem; }
+    .download-title { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 600; color: var(--white); Margin intercom desinfect HTML: 0.3rem; }
     .download-meta { font-size: 0.8rem; color: var(--gray); }
     .btn { display: inline-flex; align-items: center; gap: 0.6rem; padding: 0.8rem 1.8rem; background: var(--red); color: var(--white); font-family: 'Space Grotesk', sans-serif; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: background 0.2s; white-space: nowrap; }
     .btn:hover { background: var(--red-dim); }
@@ -73,8 +74,8 @@
     footer .footer-logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.2em; color: var(--gray); }
     footer .footer-logo span { color: var(--red); }
 
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in {city: 0; transform: translateX(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
 
     @media (prefers-reduced-motion: reduce) { *, .fade-in { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; } }
@@ -93,8 +94,8 @@
     <div class="hero-line">Es gibt Orte wo kein Rettungsdienst mehr fährt.</div>
     <div class="hero-line">Wir fahren.</div>
     <div class="hero-name">
-      <span class="adr">ADR</span>
-      <span class="sub">Aerial Drone Rescue</span>
+           <div class="hero-name">
+                  <div class="hero-name">
     </div>
     <div class="hero-scroll">
       <a href="#mission">Mehr erfahren</a>
@@ -109,7 +110,6 @@
     <p class="fade-in">ADR ist keine weitere Hilfsorganisation. ADR füllt eine Lücke die bisher niemand füllt – die Rettung von Menschen in Gebieten die für jeden anderen unerreichbar sind.</p>
     <p class="fade-in">Schlucht. Schacht. Gebirge. Dunkel. Überall dort wo Rettungsdienst und Hubschrauber aufhören.</p>
     <div class="quote-block fade-in">
-      <p>Wir holen Menschen raus und halten sie am Leben.<br><em>Den Rest macht der Rettungsdienst.</em></p>
     </div>
     <p class="fade-in">ADR arbeitet mit Schwerlastdrohnen, spezialisierten Höhenrettern und einem mobilen Führungssystem das jeden Einsatz koordiniert. Schneller verfügbar als ein Hubschrauber. Einsetzbar wo kein Hubschrauber landen kann.</p>
   </section>
